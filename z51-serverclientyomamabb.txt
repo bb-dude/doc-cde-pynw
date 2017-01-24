@@ -1,0 +1,168 @@
+
+
+
+
+..buildingnetworklistener:
+https://github.com/bwaldvogel/neighbourhood/blob/master/neighbourhood.py
+http://stackoverflow.com/questions/207234/list-of-ip-addresses-hostnames-from-local-network-in-python/
+
+import scanip.scanip
+
+scanip.scanip.start_scan()
+
+
+down vote
+	
+
+Try:
+
+import socket
+
+print [ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1]
+
+import socket
+IP1 = socket.gethostbyname(socket.gethostname()) # local IP adress of your computer
+IP2 = socket.gethostbyname('name_of_your_computer') # IP adress of remote computer
+
+..didntworkinitiallyhadtodo:
+ 1209  python z51-xpynwnwlistengthbnn.py 
+ 1210  pip install scapy.config
+ 1211  sudo pip install --upgrade pip
+ 1212  sudo pip install scapy
+ 1213  python z51-xpynwnwlistengthbnn.py 
+ 1214  sudo python z51-xpynwnwlistengthbnn.py 
+
+
+
+https://www.cyberciti.biz/tips/linux-find-out-wireless-network-speed-signal-strength.html
+https://www.cyberciti.biz/tips/linux-find-out-wireless-network-speed-signal-strength.html
+s@z501:~/Documents/cde-pypy$ iwconfig wlan0
+wlan0     IEEE 802.11bg  ESSID:"forbenben"  
+          Mode:Managed  Frequency:2.452 GHz  Access Point: A2:E4:CB:42:09:B4   
+          Bit Rate=54 Mb/s   Tx-Power=27 dBm   
+          Retry  long limit:7   RTS thr:off   Fragment thr:off
+          Power Management:off
+          Link Quality=70/70  Signal level=-19 dBm  
+          Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:692  Invalid misc:675   Missed beacon:0
+
+http://stackoverflow.com/questions/23529478/python-importerror-no-module-named-fast
+http://stackoverflow.com/questions/23529478/python-importerror-no-module-named-fast
+
+http://stackoverflow.com/questions/19872052/bind-connect-to-network-interface-card-using-python
+http://stackoverflow.com/questions/19872052/bind-connect-to-network-interface-card-using-python
+..using netifaces
+def findConnectedRobot():
+
+'''
+Finds which robots are connected to the computer and returns the
+addresses of the NIC they are connected to
+'''
+robot_address = []  # stores NIC address
+import netifaces
+# get the list of availble NIC's
+for card in netifaces.interfaces():
+    try:
+        # get all NIC addresses
+        temp = netifaces.ifaddresses(\
+                card)[netifaces.AF_INET][0]['addr']
+        temp2 = temp.split('.')
+        # see if address matches common address given to NIC when
+        # NIC is connected to a robot
+        if temp2[0] == '192' and int(temp2[3]) < 30:
+            print('appending address: ' + temp)
+            robot_address.append(temp)
+    except BaseException:
+        pass
+return robot_address
+After I get the "robot addresses" then I can just bind/connected to them like a normal socket.
+
+Thanks for the help!
+..using libnl:
+#!/usr/bin/env python
+
+import netlink.core as netlink
+import netlink.route.link as link
+import netlink.route.address as Address
+
+sock = netlink.Socket()
+sock.connect(netlink.NETLINK_ROUTE)
+
+cache = link.LinkCache()
+cache.refill(sock)
+intf = cache['wlan0']
+
+addr_cache = Address.AddressCache()
+addr_cache.refill()
+
+for addr in addr_cache:
+    if addr.ifindex == intf.ifindex:
+        print addr
+s@z501:~/Documents/cde-pypy$ watch -n 1 cat /proc/net/wireless
+s@z501:~/Documents/cde-pypy$ watch -n 1 cat /proc/net/wireless
+
+
+..how to build network listener:
+http://stackoverflow.com/questions/3233065/view-other-computers-on-the-network-programatically-in-python
+http://stackoverflow.com/questions/3233065/view-other-computers-on-the-network-programatically-in-python
+os.system('NetResView.exe /DisplayComputers 1 /RetrieveIPAddresses /stext ipfile')
+my_file = open('ipfile')
+for line in my_file :
+    print myfile.readline()
+
+..http://www.tutorialspoint.com/python/python_networking.htm
+http://www.tutorialspoint.com/python/python_networking.htm
+
+A Simple Server
+To write Internet servers, we use the socket function available in socket module to create a socket object. A socket object is then used to call other functions to setup a socket server.
+
+Now call bind(hostname, port) function to specify a port for your service on the given host.
+
+Next, call the accept method of the returned object. This method waits until a client connects to the port you specified, and then returns a connection object that represents the connection to that client.
+
+#!/usr/bin/python           # This is server.py file
+
+import socket               # Import socket module
+
+s = socket.socket()         # Create a socket object
+host = socket.gethostname() # Get local machine name
+port = 12345                # Reserve a port for your service.
+s.bind((host, port))        # Bind to the port
+
+s.listen(5)                 # Now wait for client connection.
+while True:
+   c, addr = s.accept()     # Establish connection with client.
+   print 'Got connection from', addr
+   c.send('Thank you for connecting')
+   c.close()                # Close the connection
+A Simple Client
+Let us write a very simple client program which opens a connection to a given port 12345 and given host. This is very simple to create a socket client using Python's socket module function.
+
+The socket.connect(hosname, port ) opens a TCP connection to hostname on the port. Once you have a socket open, you can read from it like any IO object. When done, remember to close it, as you would close a file.
+
+The following code is a very simple client that connects to a given host and port, reads any available data from the socket, and then exits −
+
+#!/usr/bin/python           # This is client.py file
+
+import socket               # Import socket module
+
+s = socket.socket()         # Create a socket object
+host = socket.gethostname() # Get local machine name
+port = 12345                # Reserve a port for your service.
+
+s.connect((host, port))
+print s.recv(1024)
+s.close                     # Close the socket when done
+Now run this server.py in background and then run above client.py to see the result.
+
+# Following would start a server in background.
+$ python server.py & 
+
+# Once server is started run client as follows:
+
+$ python client.py
+This would produce following result −
+
+Got connection from ('127.0.0.1', 48437)
+Thank you for connecting
+
